@@ -9,8 +9,14 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "firebase": "^8.2.9",
     "set-value": "^2.0.1",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-google-api": "^0.2.0",
+    "vue-material": "^1.0.0-beta-15",
+    "vue-router": "^3.5.1",
+    "vuetify": "^2.4.5",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

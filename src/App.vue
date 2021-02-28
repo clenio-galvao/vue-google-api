@@ -1,40 +1,41 @@
 <template>
   <div id="app">
-    <h1>Vue Google API</h1>
+    <navbar />
+    <h1>Desafio Connecta Nuvem</h1>
     <google-user v-model="user"></google-user>
-    <div v-if="user">
-      <button @click="request">make a GET people/me request with names and email addresses.</button>
-    </div>
+
   </div>
 </template>
 
 <script>
 import GoogleUser from '@/components/GoogleUser'
+import Navbar from './components/Navbar.vue'
+
 export default {
   name: 'app',
-  components: { GoogleUser },
+  components: { GoogleUser, Navbar },
   data () {
     return {
       user: undefined
     }
   },
   methods: {
-    request () {
-      this.$gapi.request({
-        path: 'https://people.googleapis.com/v1/people/me',
-        method: 'GET',
-        params: {
-          personFields: 'names,emailAddresses'
-        }
-      }).then(response => {
-        console.log(response.result)
-      })
-    }
   },
   mounted () {
     this.$gapi.currentUser()
       .then(user => {
         this.user = user
+      })
+    this.$gapi._libraryInit('client',
+      { discoveryDocs: [ 'https://people.googleapis.com/$discovery/rest' ] })
+      .then(client => {
+        return client.people.people.connections.list({
+          'resourceName': 'people/me',
+          'pageSize': 20,
+          'requestMask.includeField': 'person.names'
+        }).then(response => {
+          console.log(response.result.connections)
+        })
       })
   }
 }
